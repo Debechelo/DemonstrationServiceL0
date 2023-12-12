@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d7100b7-0560-45a7-b9ed-bb4537686a63" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/index/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/index/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/handler/handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wait-for-postgres.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,9 +49,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0" />
       <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\cmd" />
       <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\index" />
-      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0" />
       <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\docker" />
       <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\main" />
     </key>
