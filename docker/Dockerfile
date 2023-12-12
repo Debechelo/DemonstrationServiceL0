@@ -9,7 +9,11 @@ COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
 
-COPY *.go .
+COPY ./cmd ./cmd
+COPY ./index ./index
+COPY ./internal ./internal
+
+WORKDIR /app/cmd
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /server .
 
@@ -18,9 +22,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /server .
 ##
 FROM gcr.io/distroless/static AS deploy
 
-WORKDIR /
+WORKDIR /app
 
-COPY --from=build /server /server
+COPY --from=build ./server ./server
+COPY --from=build app/index ./index
 
 EXPOSE 8080
 
