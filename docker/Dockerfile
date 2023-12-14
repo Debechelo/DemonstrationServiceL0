@@ -13,7 +13,14 @@ COPY ./cmd ./cmd
 COPY ./index ./index
 COPY ./internal ./internal
 
+# Установка statik
+RUN apk add --no-cache git
+RUN go get github.com/rakyll/statik
+
 WORKDIR /app/cmd
+
+# Выполнение statik
+RUN statik -src=/app
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /server .
 

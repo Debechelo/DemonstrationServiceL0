@@ -1,13 +1,12 @@
 package main
 
 import (
+	"DemonstrationServiceL0/internal/transport/rest"
 	"fmt"
-
-	"DemonstrationServiceL0/internal/handler"
 )
 
 func main() {
 	fmt.Println("Connected to ...!")
 
-	handler.StartServer(":8080")
+	rest.StartServer(":8080")
 }
