@@ -1,37 +1,27 @@
 package nats
 
 import (
-	"fmt"
 	"github.com/nats-io/stan.go"
 	"log"
+	"time"
 )
 
 const (
-	clusterID = "your-cluster-id"
-	clientID  = "your-client-id"
-	natsURL   = "nats://nats-streaming:4222"
+	natsURL = "nats://nats-streaming:4222"
+	subject = "subject"
 )
 
-func ConnectNatsS() stan.Conn {
-	//Настройка nats-streaming
-	sc, err := stan.Connect(clusterID, clientID, stan.NatsURL(natsURL))
-	if err != nil {
-		log.Fatal(err)
-	}
-	return sc
-}
-
-func PublishNatsS(sc stan.Conn) {
-	err := sc.Publish("your-channel", []byte("your-message"))
+func PublishNatsS(sc *stan.Conn, message []byte) {
+	err := (*sc).Publish(subject, message)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func SubscribeNatsS(sc stan.Conn) stan.Subscription {
-	subscription, err := sc.Subscribe("your-channel", func(msg *stan.Msg) {
+func SubscribeNatsS(sc *stan.Conn) stan.Subscription {
+	subscription, err := (*sc).Subscribe(subject, func(msg *stan.Msg) {
 		// Обработка полученного сообщения
-		fmt.Printf("Received message: %s\n", string(msg.Data))
+		log.Printf("Received message: %s\n", string(msg.Data))
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -39,18 +29,27 @@ func SubscribeNatsS(sc stan.Conn) stan.Subscription {
 	return subscription
 }
 
-func Close(sc stan.Conn) {
-	if err := sc.Close(); err != nil {
+func Close(sc *stan.Conn) {
+	if err := (*sc).Close(); err != nil {
 		log.Println("Error closing NATS Streaming connection:", err)
 	}
-	sc, err := stan.Connect(clusterID, clientID, stan.NatsURL(natsURL),
-		stan.SetConnectionLostHandler(func(_ stan.Conn, reason error) {
-			log.Printf("Connection lost, reason: %v\n", reason)
-			//
+}
 
-		}),
-	)
-	if err != nil {
-		log.Fatal(err)
+func ConnectNATSStreaming(sc **stan.Conn, clientID string, clusterID string) {
+	for {
+		newSc, err := stan.Connect(clusterID, clientID, stan.NatsURL(natsURL),
+			stan.SetConnectionLostHandler(func(_ stan.Conn, reason error) {
+				log.Printf("Connection lost, reason: %v\n", reason)
+				ConnectNATSStreaming(sc, clientID, clusterID)
+			}),
+		)
+		if err != nil {
+			log.Printf("Error reconnecting: %v. Retrying in 5 seconds...", err)
+			time.Sleep(5 * time.Second)
+			continue
+		}
+
+		*sc = &newSc
+		break
 	}
 }

@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -16,14 +16,14 @@ func StartServer(addr string) {
 func handler(w http.ResponseWriter, r *http.Request) {
 	filePath, err := filepath.Abs("index/index.html")
 	if err != nil {
-		fmt.Printf("Error getting absolute file path: %s\n", err)
+		log.Printf("Error getting absolute file path: %s\n", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
 	file, err := os.Open(filePath)
 	if err != nil {
-		fmt.Printf("Error opening file: %s\n", err)
+		log.Printf("Error opening file: %s\n", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -32,7 +32,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// Чтение содержимого файла
 	stat, err := file.Stat()
 	if err != nil {
-		fmt.Printf("Error getting file info: %s\n", err)
+		log.Printf("Error getting file info: %s\n", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -40,7 +40,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	data := make([]byte, stat.Size())
 	_, err = file.Read(data)
 	if err != nil {
-		fmt.Printf("Error reading file: %s\n", err)
+		log.Printf("Error reading file: %s\n", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}

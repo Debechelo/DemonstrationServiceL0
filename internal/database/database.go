@@ -2,20 +2,20 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
+	_ "github.com/lib/pq"
 	"log"
 )
 
 const (
-	dbHost     = "db"
-	dbPort     = 5432
-	dbUser     = "Pavel"
-	dbPassword = "qwerty"
-	dbName     = "demo_service_database"
+	dbHost = "db"
+	dbPort = 5432
 )
 
-func ConnectDB() *sql.DB {
+func ConnectDB(dbName string, dbUser string, dbPassword string) *sql.DB {
 	// Настройка базы данных PostgreSQL
-	db, err := sql.Open("postgres", "postgres://dbUser:dbPassword@db/dbName?sslmode=disable")
+	dataSourceName := fmt.Sprintf("postgres://%v:%v@db/%v?sslmode=disable", dbUser, dbPassword, dbName)
+	db, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
 		log.Fatal(err)
 	}

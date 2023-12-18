@@ -3,25 +3,20 @@
 ##
 FROM golang:1.16-alpine AS build
 
+# Установка необходимых пакетов
+RUN apk --no-cache add git gcc libc-dev postgresql-client postgresql-dev
+
 WORKDIR /app
 
 COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
 
-COPY ./cmd ./cmd
+COPY ./cmd/handler ./cmd
 COPY ./index ./index
 COPY ./internal ./internal
 
-# Установка statik
-RUN apk add --no-cache git
-RUN go get github.com/rakyll/statik
-run go get -u github.com/gin-gonic/gin
-
 WORKDIR /app/cmd
-
-# Выполнение statik
-RUN statik -src=/app
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /server .
 
@@ -42,5 +37,5 @@ USER nonroot:nonroot
 #CMD ["./main"]
 ENTRYPOINT ["./server"]
 
-#docker build . -f docker/Dockerfile --tag demo_servis
+#docker build . -f docker/DockerfileSender --tag demo_servis
 #docker run -p 8080:8080 demo_servis

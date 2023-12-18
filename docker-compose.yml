@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  app:
+  handler:
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/DockerfileHandler
     command: ./wait-for-postgres.sh db ./DemonstrationServiceL0
     ports:
       - "8080:8080"
@@ -11,7 +11,19 @@ services:
       - db
       - nats-streaming
     environment:
-      - DB_PASSWORD=qwerty
+      - POSTGRES_DB=demo_service_database
+      - POSTGRES_USER=Pavel
+      - POSTGRES_PASSWORD=qwerty
+      - NATS_CLUSTER_ID=nats-cluster
+
+  sender:
+    build:
+      dockerfile: docker/DockerfileSender
+    depends_on:
+      - db
+      - nats-streaming
+    environment:
+      - NATS_CLUSTER_ID=nats-cluster
 
   db:
     restart: always
@@ -35,5 +47,6 @@ services:
     ports:
       - "4222:4222"
       - "8222:8222"
+    command: [ "-cid", "nats-cluster"]
 
 #  docker exec -it demonstrationservicel0-db-1 psql -U Pavel -d demo_service_database

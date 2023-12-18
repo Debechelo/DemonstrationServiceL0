@@ -1,0 +1,30 @@
+##
+## Build
+##
+FROM golang:1.16-alpine AS build
+
+WORKDIR /app
+
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+
+COPY ./cmd/sender ./cmd
+COPY ./internal ./internal
+COPY model.json model.json
+
+WORKDIR /app/cmd
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o /server .
+
+##
+## Deploy
+##
+FROM gcr.io/distroless/static AS deploy
+
+WORKDIR /app
+
+COPY --from=build ./server ./server
+COPY --from=build app/model.json ./model.json
+
+ENTRYPOINT ["./server"]
