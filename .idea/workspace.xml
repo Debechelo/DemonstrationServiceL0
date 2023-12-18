@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d7100b7-0560-45a7-b9ed-bb4537686a63" name="Changes" comment="Add db">
-      <change afterPath="$PROJECT_DIR$/internal/database/database.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migration/init.sql" afterDir="false" />
+    <list default="true" id="1d7100b7-0560-45a7-b9ed-bb4537686a63" name="Changes" comment="db0.5">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/handler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/transport/rest/handler.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +82,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add db" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add db" />
+    <MESSAGE value="db0.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="db0.5" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

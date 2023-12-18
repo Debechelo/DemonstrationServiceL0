@@ -9,6 +9,7 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - nats-streaming
     environment:
       - DB_PASSWORD=qwerty
 
@@ -28,5 +29,11 @@ services:
       retries: 5
     volumes:
       - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  nats-streaming:
+    image: nats-streaming:latest
+    ports:
+      - "4222:4222"
+      - "8222:8222"
 
 #  docker exec -it demonstrationservicel0-db-1 psql -U Pavel -d demo_service_database

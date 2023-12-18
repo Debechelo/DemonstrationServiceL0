@@ -16,6 +16,7 @@ COPY ./internal ./internal
 # Установка statik
 RUN apk add --no-cache git
 RUN go get github.com/rakyll/statik
+run go get -u github.com/gin-gonic/gin
 
 WORKDIR /app/cmd
 
