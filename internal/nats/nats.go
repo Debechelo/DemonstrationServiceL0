@@ -11,10 +11,16 @@ const (
 	subject = "subject"
 )
 
-func PublishNatsS(sc *stan.Conn, message []byte) {
+func PublishNatsS(sc *stan.Conn, message []byte, done chan bool) {
 	err := (*sc).Publish(subject, message)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Received message: %v\n", err)
+		if !(*sc).NatsConn().IsClosed() {
+			log.Printf("close channel")
+			done <- true
+		}
+		time.Sleep(1 * time.Second)
+		PublishNatsS(sc, message, done)
 	}
 }
 

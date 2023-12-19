@@ -8,9 +8,6 @@ import (
 	"fmt"
 	"github.com/nats-io/stan.go"
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 )
 
@@ -27,6 +24,7 @@ func main() {
 	fmt.Println("Connected to Server!")
 
 	//Подключение к NATS-Streaming
+	done := make(chan bool)
 	clientIDHandler := "Handler"
 	var sc *stan.Conn
 	go nats.ConnectNATSStreaming(&sc, clientIDHandler, config.GetClientID())
@@ -35,15 +33,12 @@ func main() {
 	for sc == nil {
 		time.Sleep(100 * time.Millisecond)
 	}
-
+	defer nats.Close(sc)
 	fmt.Println("Connected to NATS Streaming")
 
-	// Обработка сообщений
+	// Отправка сообщений
 
-	// Ожидание сигналов завершения работы (Ctrl+C)
-	signalCh := make(chan os.Signal, 1)
-	signal.Notify(signalCh, os.Interrupt, syscall.SIGTERM)
-	<-signalCh
+	<-done
 
 	log.Println("Shutting down...")
 

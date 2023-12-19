@@ -7,11 +7,11 @@ import (
 	"time"
 )
 
-func Sender(sc *stan.Conn) {
+func Sender(sc *stan.Conn, done chan bool) {
 	for {
 		message := service.ReadJSON()
 
-		PublishNatsS(sc, message)
+		PublishNatsS(sc, message, done)
 		log.Printf("Send message")
 
 		time.Sleep(1 * time.Second)
