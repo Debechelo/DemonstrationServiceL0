@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"log"
+	"time"
 )
 
 const (
@@ -14,10 +15,22 @@ const (
 
 func ConnectDB(dbName string, dbUser string, dbPassword string) *sql.DB {
 	// Настройка базы данных PostgreSQL
-	dataSourceName := fmt.Sprintf("postgres://%v:%v@db/%v?sslmode=disable", dbUser, dbPassword, dbName)
-	db, err := sql.Open("postgres", dataSourceName)
-	if err != nil {
-		log.Fatal(err)
+	connectionString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		dbHost, dbPort, dbUser, dbPassword, dbName)
+
+	var db *sql.DB
+	var err error
+
+	// Попытки подключения
+	for {
+		db, err = sql.Open("postgres", connectionString)
+		if err != nil {
+			log.Println("Error opening database:", err)
+			time.Sleep(5 * time.Second)
+		} else {
+			fmt.Println("Connected to the database!")
+			break
+		}
 	}
 	return db
 }

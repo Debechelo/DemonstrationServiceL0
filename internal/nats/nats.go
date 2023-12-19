@@ -1,6 +1,7 @@
 package nats
 
 import (
+	"database/sql"
 	"github.com/nats-io/stan.go"
 	"log"
 	"time"
@@ -24,14 +25,14 @@ func PublishNatsS(sc *stan.Conn, message []byte, done chan bool) {
 	}
 }
 
-func SubscribeNatsS(sc *stan.Conn) stan.Subscription {
+func SubscribeNatsS(sc *stan.Conn, client string, db *sql.DB) stan.Subscription {
 	subscription, err := (*sc).Subscribe(subject, func(msg *stan.Msg) {
-		// Обработка полученного сообщения
-		log.Printf("Received message: %s\n", string(msg.Data))
-	})
+		Handler(msg, db)
+	}, stan.DurableName(client))
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Subscription error%v:", err)
 	}
+	log.Printf("Subscription")
 	return subscription
 }
 

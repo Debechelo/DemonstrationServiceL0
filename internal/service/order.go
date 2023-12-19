@@ -8,7 +8,7 @@ type Order struct {
 	Entry           string    `json:"entry"`
 	Delivery        Delivery  `json:"delivery"`
 	Payment         Payment   `json:"payment"`
-	Items           []Item    `json:"items"`
+	Item            Item      `json:"item"`
 	Locale          string    `json:"locale"`
 	InternalSig     string    `json:"internal_signature"`
 	CustomerID      string    `json:"customer_id"`

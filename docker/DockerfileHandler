@@ -1,7 +1,7 @@
 ##
 ## Build
 ##
-FROM golang:1.16-alpine AS build
+FROM golang:1.20-alpine AS build
 
 # Установка необходимых пакетов
 RUN apk --no-cache add git gcc libc-dev postgresql-client postgresql-dev

@@ -1,4 +1,4 @@
-version: '3'
+version: '4'
 
 services:
   handler:
@@ -27,20 +27,14 @@ services:
 
   db:
     restart: always
-    image: postgres:latest
+    build:
+      dockerfile: docker/DockerfileDB
     environment:
       POSTGRES_DB: demo_service_database
       POSTGRES_USER: Pavel
       POSTGRES_PASSWORD: qwerty
     ports:
       - "5432:5432"
-    healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "demo_service_database", "-U", "Pavel" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   nats-streaming:
     image: nats-streaming:latest

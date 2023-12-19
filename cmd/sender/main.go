@@ -28,8 +28,16 @@ func main() {
 	// Отправка сообщений
 	go nats.Sender(sc, done)
 
-	<-done
+	WaitClose(done)
 
 	log.Println("Shutting down...")
+}
 
+func WaitClose(done chan bool) {
+	for {
+		select {
+		case <-done:
+			break
+		}
+	}
 }

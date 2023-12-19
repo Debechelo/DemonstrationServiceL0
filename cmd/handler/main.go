@@ -4,7 +4,6 @@ import (
 	"DemonstrationServiceL0/internal/config"
 	"DemonstrationServiceL0/internal/database"
 	"DemonstrationServiceL0/internal/nats"
-	"DemonstrationServiceL0/internal/transport/rest"
 	"fmt"
 	"github.com/nats-io/stan.go"
 	"log"
@@ -19,10 +18,6 @@ func main() {
 	db := database.ConnectDB(config.GetDBName(), config.GetDBUser(), config.GetDBPassword())
 	defer db.Close()
 
-	//Подключение к Серверу
-	rest.StartServer(":8080")
-	fmt.Println("Connected to Server!")
-
 	//Подключение к NATS-Streaming
 	done := make(chan bool)
 	clientIDHandler := "Handler"
@@ -36,10 +31,26 @@ func main() {
 	defer nats.Close(sc)
 	fmt.Println("Connected to NATS Streaming")
 
-	// Отправка сообщений
+	//Подключение к Серверу
+	//rest.StartServer(":8080")
+	//fmt.Println("Connected to Server!")
 
-	<-done
+	// Отправка сообщений
+	sub := nats.SubscribeNatsS(sc, clientIDHandler, db)
+
+	WaitClose(sub, done)
 
 	log.Println("Shutting down...")
+}
 
+func WaitClose(sub stan.Subscription, done chan bool) {
+	for {
+		select {
+		case <-done:
+			if err := sub.Close(); err != nil {
+				log.Println("Closing subscriber:", err)
+			}
+			break
+		}
+	}
 }

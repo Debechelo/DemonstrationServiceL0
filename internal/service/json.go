@@ -33,12 +33,12 @@ func ReadJSON() []byte {
 }
 
 // Декодирование JSON
-func DecodeJSON(content []byte) Order {
+func DecodeJSON(content []byte) *Order {
 	var order Order
 	if err := json.Unmarshal(content, &order); err != nil {
 		log.Fatal("Error decoding JSON:", err)
 	}
-	return order
+	return &order
 }
 
 // Раскодирование JSON
