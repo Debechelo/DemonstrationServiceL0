@@ -1,22 +1,23 @@
-package nats
+package sender
 
 import (
+	"DemonstrationServiceL0/internal/config"
+	"DemonstrationServiceL0/internal/nats"
 	"DemonstrationServiceL0/internal/service"
 	"github.com/google/uuid"
-	"github.com/nats-io/stan.go"
 	"log"
 	"strings"
 	"time"
 )
 
-func Sender(sc *stan.Conn, done chan bool) {
+func Sender(cfg *config.NATSConfig, done chan bool) {
 	json := string(service.ReadJSON())
 	for {
 		message, id := setID(json)
-		PublishNatsS(sc, []byte(message), done)
+		nats.PublishNatsS(cfg, []byte(message), done)
 		log.Printf("Send message id:%s", id)
 
-		time.Sleep(1 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 }
 

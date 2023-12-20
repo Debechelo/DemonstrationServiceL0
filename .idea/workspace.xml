@@ -5,22 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d7100b7-0560-45a7-b9ed-bb4537686a63" name="Changes" comment="db0.5">
-      <change afterPath="$PROJECT_DIR$/docker/DockerfileDB" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/cache/cache.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/handler/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/handler/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/sender/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/sender/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/DockerfileHandler" beforeDir="false" afterPath="$PROJECT_DIR$/docker/DockerfileHandler" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/DockerfileSender" beforeDir="false" afterPath="$PROJECT_DIR$/docker/DockerfileSender" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/config/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/database/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/database/database.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/nats/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/nats/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/nats/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/handler/handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/nats/nats.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/nats/nats.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/nats/sender.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/nats/sender.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/service/json.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/service/json.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/service/order.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/service/order.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migration/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/migration/init.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/nats/sender.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sender/sender.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,11 +67,11 @@
       <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\cmd\sendler" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\internal\sender" />
+      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\internal\handler" />
+      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\internal" />
       <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\cmd\handler" />
       <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\internal\transport" />
-      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\internal" />
-      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0" />
-      <recent name="C:\Users\Pavel\Documents\Go\DemonstrationService\DemonstrationServiceL0\cmd" />
     </key>
   </component>
   <component name="RunManager" selected="Go Build.go build DemonstrationServiceL0/cmd/handler">
@@ -129,21 +125,5 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/internal/nats/nats.go</url>
-          <line>46</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/cmd/sender/main.go</url>
-          <line>28</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

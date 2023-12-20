@@ -7,27 +7,21 @@ import (
 	"fmt"
 	"github.com/nats-io/stan.go"
 	"log"
-	"time"
 )
+
+var cfg = config.InitHandler()
 
 func main() {
 
-	config := config.InitHandler()
-
 	//Подключение к базе данных
-	db := database.ConnectDB(config.GetDBName(), config.GetDBUser(), config.GetDBPassword())
-	defer db.Close()
-
-	//Подключение к NATS-Streaming
-	done := make(chan bool)
-	clientIDHandler := "Handler"
-	var sc *stan.Conn
-	go nats.ConnectNATSStreaming(&sc, clientIDHandler, config.GetClientID())
-
-	// Ожидайте, пока соединение будет установлено
-	for sc == nil {
-		time.Sleep(100 * time.Millisecond)
+	db, err := database.ConnectDB(&cfg.DBCfg)
+	if err != nil {
+		log.Fatalf("failed to initialize db: %s", err.Error())
 	}
+
+	done := make(chan bool)
+	//Подключение к NATS-Streaming
+	sc := nats.ConnectNATSStreaming(&cfg.NATSCfg)
 	defer nats.Close(sc)
 	fmt.Println("Connected to NATS Streaming")
 
@@ -36,7 +30,7 @@ func main() {
 	//fmt.Println("Connected to Server!")
 
 	// Отправка сообщений
-	sub := nats.SubscribeNatsS(sc, clientIDHandler, db)
+	sub := nats.SubscribeNatsS(&cfg.NATSCfg, db)
 
 	WaitClose(sub, done)
 

@@ -5,15 +5,28 @@ import (
 	"os"
 )
 
-type configSender struct {
-	clientIDSender string
+type NATSConfig struct {
+	clusterID string
+	clientID  string
+	subject   string
+	URL       string
 }
 
-type configHandler struct {
-	clientIDHandler string
-	dbName          string
-	dbUser          string
-	dbPassword      string
+type DBConfig struct {
+	dbName     string
+	dbUser     string
+	dbPassword string
+	dbHost     string
+	dbPort     string
+}
+
+type SenderConfig struct {
+	NATSCfg NATSConfig
+}
+
+type HandlerConfig struct {
+	NATSCfg NATSConfig
+	DBCfg   DBConfig
 }
 
 func getEnv(key, defaultValue string) string {
@@ -23,44 +36,80 @@ func getEnv(key, defaultValue string) string {
 	return defaultValue
 }
 
-func InitSender() configSender {
-	cS := configSender{
-		clientIDSender: getEnv("NATS_CLUSTER_ID", "default-cluster-id"),
+func InitSender() *SenderConfig {
+	cS := &SenderConfig{
+		NATSConfig{
+			clusterID: getEnv("NATS_CLUSTER_ID", "default-cluster-id"),
+			clientID:  "Sender",
+			subject:   "subject",
+			URL:       "nats://nats-streaming:4222",
+		},
 	}
-	log.Printf("Cluster ID: %s\n", cS.clientIDSender)
+	log.Printf("Cluster ID: %s\n", cS.NATSCfg.clusterID)
+	log.Printf("Cluster ID: %s\n", cS.NATSCfg.clientID)
+	log.Printf("Cluster ID: %s\n", cS.NATSCfg.subject)
 	return cS
 }
 
-func InitHandler() configHandler {
-	cH := configHandler{
-		clientIDHandler: getEnv("NATS_CLUSTER_ID", "default-cluster-id"),
-		dbName:          getEnv("POSTGRES_DB", "default-db"),
-		dbUser:          getEnv("POSTGRES_USER", "default-user"),
-		dbPassword:      getEnv("POSTGRES_PASSWORD", "default-password"),
+func InitHandler() *HandlerConfig {
+	cH := &HandlerConfig{
+		NATSConfig{
+			clusterID: getEnv("NATS_CLUSTER_ID", "default-cluster-id"),
+			clientID:  "Handler",
+			subject:   "subject",
+			URL:       "nats://nats-streaming:4222",
+		},
+		DBConfig{
+			dbName:     getEnv("POSTGRES_DB", "default-db"),
+			dbUser:     getEnv("POSTGRES_USER", "default-user"),
+			dbPassword: getEnv("POSTGRES_PASSWORD", "default-password"),
+			dbHost:     "db",
+			dbPort:     "5432",
+		},
 	}
-	log.Printf("Cluster ID: %s\n", cH.clientIDHandler)
-	log.Printf("POSTGRES DB: %s\n", cH.dbName)
-	log.Printf("POSTGRES USER: %s\n", cH.dbUser)
-	log.Printf("POSTGRES PASSWORD: %s\n", cH.dbPassword)
+	log.Printf("Cluster ID: %s\n", cH.NATSCfg.clusterID)
+	log.Printf("Cluster ID: %s\n", cH.NATSCfg.clientID)
+	log.Printf("Cluster ID: %s\n", cH.NATSCfg.subject)
+	log.Printf("POSTGRES DB: %s\n", cH.DBCfg.dbName)
+	log.Printf("POSTGRES USER: %s\n", cH.DBCfg.dbUser)
+	log.Printf("POSTGRES PASSWORD: %s\n", cH.DBCfg.dbPassword)
+	log.Printf("POSTGRES HOST: %s\n", cH.DBCfg.dbHost)
+	log.Printf("POSTGRES PORT: %s\n", cH.DBCfg.dbPort)
 	return cH
 }
 
-func (cS configSender) GetClientID() string {
-	return cS.clientIDSender
+func (cS NATSConfig) GetClientID() string {
+	return cS.clientID
 }
 
-func (cH configHandler) GetClientID() string {
-	return cH.clientIDHandler
+func (cS NATSConfig) GetClusterID() string {
+	return cS.clusterID
 }
 
-func (cH configHandler) GetDBName() string {
+func (cS NATSConfig) GetSubject() string {
+	return cS.subject
+}
+
+func (cS NATSConfig) GetUrl() string {
+	return cS.URL
+}
+
+func (cH DBConfig) GetDBName() string {
 	return cH.dbName
 }
 
-func (cH configHandler) GetDBUser() string {
+func (cH DBConfig) GetDBUser() string {
 	return cH.dbUser
 }
 
-func (cH configHandler) GetDBPassword() string {
+func (cH DBConfig) GetDBPassword() string {
 	return cH.dbPassword
+}
+
+func (cH DBConfig) GetDBHost() string {
+	return cH.dbHost
+}
+
+func (cH DBConfig) GetDBPort() string {
+	return cH.dbPort
 }

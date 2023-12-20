@@ -1,4 +1,4 @@
-package nats
+package handler
 
 import (
 	"DemonstrationServiceL0/internal/service"
@@ -24,7 +24,7 @@ func insertData(db *sql.DB, order *service.Order) error {
 	itemsUid := uuid.NewString()
 
 	// Вставка данных в таблице orders
-	_, err := (*db).Exec(`
+	_, err := db.Exec(`
 		INSERT INTO orders (
 			order_uid, track_number, entry, delivery_uid, payment_uid, item_uid, locale, internal_signature,
 			customer_id, delivery_service, shard_key, sm_id, date_created, oof_shard
@@ -41,7 +41,7 @@ func insertData(db *sql.DB, order *service.Order) error {
 	}
 
 	// Вставка данных в таблице delivery
-	_, err = (*db).Exec(`
+	_, err = db.Exec(`
 		INSERT INTO delivery (
 			delivery_uid, name, phone, zip, city, address, region, email
 		) VALUES (
@@ -56,7 +56,7 @@ func insertData(db *sql.DB, order *service.Order) error {
 	}
 
 	// Вставка данных в таблице payment
-	_, err = (*db).Exec(`
+	_, err = db.Exec(`
 		INSERT INTO payment (
 			payment_uid, transaction, request_id, currency, provider, amount, payment_dt, bank,
 			delivery_cost, goods_total, custom_fee
@@ -73,7 +73,7 @@ func insertData(db *sql.DB, order *service.Order) error {
 	}
 
 	// Вставка данных в таблице item
-	_, err = (*db).Exec(`
+	_, err = db.Exec(`
 			INSERT INTO items (
 				item_uid, chrt_id, track_number, price, rid, name, sale, size, total_price, nm_id, brand, status
 			) VALUES (

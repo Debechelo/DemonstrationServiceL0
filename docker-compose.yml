@@ -14,6 +14,7 @@ services:
       - POSTGRES_DB=demo_service_database
       - POSTGRES_USER=Pavel
       - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_HOST=db
       - NATS_CLUSTER_ID=nats-cluster
 
   sender:
@@ -42,5 +43,10 @@ services:
       - "4222:4222"
       - "8222:8222"
     command: [ "-cid", "nats-cluster"]
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
 
 #  docker exec -it demonstrationservicel0-db-1 psql -U Pavel -d demo_service_database

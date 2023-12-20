@@ -3,30 +3,23 @@ package main
 import (
 	"DemonstrationServiceL0/internal/config"
 	"DemonstrationServiceL0/internal/nats"
+	"DemonstrationServiceL0/internal/sender"
 	"fmt"
-	"github.com/nats-io/stan.go"
 	"log"
-	"time"
 )
+
+var cfg = config.InitSender()
 
 func main() {
 
 	done := make(chan bool)
 	//Подключение к NATS-Streaming
-	clientIDSender := "Sender"
-	config := config.InitSender()
-	var sc *stan.Conn
-	go nats.ConnectNATSStreaming(&sc, clientIDSender, config.GetClientID())
-
-	// Ожидайте, пока соединение будет установлено
-	for sc == nil {
-		time.Sleep(100 * time.Millisecond)
-	}
+	sc := nats.ConnectNATSStreaming(&cfg.NATSCfg)
 	defer nats.Close(sc)
 	fmt.Println("Connected to NATS Streaming")
 
 	// Отправка сообщений
-	go nats.Sender(sc, done)
+	go sender.Sender(&cfg.NATSCfg, done)
 
 	WaitClose(done)
 
