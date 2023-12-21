@@ -4,15 +4,18 @@ import (
 	"DemonstrationServiceL0/internal/config"
 	"DemonstrationServiceL0/internal/database"
 	"DemonstrationServiceL0/internal/nats"
+	"DemonstrationServiceL0/internal/transport/rest"
 	"fmt"
 	"github.com/nats-io/stan.go"
 	"log"
+	"time"
 )
 
 var cfg = config.InitHandler()
 
 func main() {
 
+	time.Sleep(time.Second * 5)
 	//Подключение к базе данных
 	db, err := database.ConnectDB(&cfg.DBCfg)
 	if err != nil {
@@ -25,12 +28,11 @@ func main() {
 	defer nats.Close(sc)
 	fmt.Println("Connected to NATS Streaming")
 
-	//Подключение к Серверу
-	//rest.StartServer(":8080")
-	//fmt.Println("Connected to Server!")
-
-	// Отправка сообщений
+	// Подписка
 	sub := nats.SubscribeNatsS(&cfg.NATSCfg, db)
+
+	//Подключение к Серверу
+	go rest.StartServer()
 
 	WaitClose(sub, done)
 

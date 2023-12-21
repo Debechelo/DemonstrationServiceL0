@@ -9,5 +9,46 @@
     <link rel="stylesheet" href="/index/style.css">
 </head>
 <body>
+<script>
+    // Функция для отображения модального окна с JSON-данными
+    function showModal(jsonData) {
+        var modal = document.getElementById("myModal");
+        var jsonContent = document.getElementById("jsonContent");
+
+        // Парсим JSON и отображаем его в модальном окне
+        try {
+            var parsedData = JSON.parse(jsonData);
+            jsonContent.innerText = JSON.stringify(parsedData, null, 2);
+            modal.style.display = "block";
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+        }
+    }
+
+    // Функция для закрытия модального окна
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+
+    function updateContent(text) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById("myDiv").innerHTML = response.htmlContent;
+                document.getElementById("jsonContent").innerText = JSON.stringify(response.jsonData, null, 2);
+            }
+        };
+
+        var data = "text=" + encodeURIComponent(text);
+        xhr.send(data);
+    }
+    // Вызываем функцию с каким-то текстом
+    updateContent("Ваш текст для обновления");
+</script>
 </body>
 </html>

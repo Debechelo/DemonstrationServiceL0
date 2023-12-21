@@ -1,5 +1,0 @@
-FROM postgres:latest
-
-COPY migration/init.sql /docker-entrypoint-initdb.d/init.sql
-
-CMD ["docker-entrypoint.sh", "postgres"]

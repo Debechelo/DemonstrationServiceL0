@@ -1,50 +1,44 @@
 package rest
 
 import (
+	"DemonstrationServiceL0/internal/caching"
+	"DemonstrationServiceL0/internal/service"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 )
 
-func StartServer(addr string) {
-	http.HandleFunc("/", handler)
-	http.Handle("/style.css", http.FileServer(http.Dir("/app/index")))
-	http.ListenAndServe(addr, nil)
-}
+func StartServer() {
+	router := gin.Default()
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	filePath, err := filepath.Abs("index/index.html")
-	if err != nil {
-		log.Printf("Error getting absolute file path: %s\n", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	// Обработчик для получения данных заказа по ID
+	router.GET("/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		var OrderId int
 
-	file, err := os.Open(filePath)
-	if err != nil {
-		log.Printf("Error opening file: %s\n", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-	defer file.Close()
+		// Преобразование параметра id в число
+		if _, err := fmt.Sscanf(id, "%d", &OrderId); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid order ID"})
+			return
+		}
 
-	// Чтение содержимого файла
-	stat, err := file.Stat()
-	if err != nil {
-		log.Printf("Error getting file info: %s\n", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+		// Поиск заказа по ID в кеше
+		item, found := caching.GetCache(OrderId)
+		order, ok := item.(service.Order)
+		if !ok {
+			log.Println("Error to order!")
+		}
+		if !found {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Order not found"})
+			return
+		}
 
-	data := make([]byte, stat.Size())
-	_, err = file.Read(data)
-	if err != nil {
-		log.Printf("Error reading file: %s\n", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+		// Отправка данных заказа в формате JSON
+		c.JSON(http.StatusOK, order)
+	})
 
-	w.Header().Set("Content-Type", "text/html")
-	w.Write(data)
+	log.Println("Connected to Server!")
+	// Запускаем сервер
+	router.Run(":8080")
 }
